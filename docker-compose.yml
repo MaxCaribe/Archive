@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - ./tmp/postgresql/data:/var/lib/postgresql/data:delegated
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+  rails:
+    build: .
+    volumes:
+      - .:/var/www/app:cached
+    depends_on:
+      - postgres
+    command: bundle exec rails s -p 3000 -b 0.0.0.0
+    ports:
+      - "3000:3000"
+
+
